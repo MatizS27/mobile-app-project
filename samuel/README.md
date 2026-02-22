@@ -1,119 +1,129 @@
 # Lost&Found Uni
 
+Sistema digital para la gestión de objetos perdidos dentro de la
+universidad, integrado con la aplicación institucional existente.
+
+------------------------------------------------------------------------
+
 ## Descripción General
 
-Lost&Found Uni es una solución digital para optimizar la gestión de
-objetos perdidos dentro de la universidad, integrable como módulo dentro
-de la aplicación institucional UninorteCo o como sistema independiente
-conectado al ecosistema académico.
+Lost&Found Uni es un módulo que permite digitalizar el proceso actual de
+objetos perdidos de la universidad.\
+Actualmente, los objetos encontrados se guardan bajo llave hasta que el
+dueño reclama diligenciando un formulario y confirmando su propiedad.
 
-El sistema digitaliza el proceso actual (custodia física + formulario de
-verificación), agrega trazabilidad, notificaciones, analítica
-institucional y control por roles.
+La aplicación permite:
 
-------------------------------------------------------------------------
-
-## Referentes Analizados
-
-### 1. Chargerback
-
-Sitio: https://www.chargerback.com\
-Sistema profesional usado por aeropuertos y hoteles para gestión de
-objetos perdidos.
-
-Aportes: - Flujo estructurado de reclamos - Estados de seguimiento -
-Panel administrativo robusto
-
-Limitaciones: - Costoso - No adaptado a ecosistemas académicos - No
-integrado a apps universitarias
+-   Registrar objetos encontrados
+-   Publicar objetos disponibles para reclamar
+-   Solicitar reclamación digital
+-   Validar propiedad
+-   Integrarse con la aplicación institucional existente (ej:
+    Uninorteco)
+-   Generar trazabilidad completa del proceso
 
 ------------------------------------------------------------------------
 
-### 2. Nextdoor
+## Integración con la App Institucional
 
-Sitio: https://nextdoor.com
+Lost&Found Uni puede integrarse como:
 
-Aportes: - Modelo comunitario - Publicación sencilla - Filtros por
-ubicación
+-   Un módulo interno dentro de la app universitaria existente
+-   Un microservicio conectado mediante API REST
+-   Un sistema autenticado con correo institucional
+-   Un servicio que use la base de datos de estudiantes y funcionarios
 
-Limitaciones: - Sin control institucional - Sin validación formal de
-propiedad - Riesgo de fraude
-
-------------------------------------------------------------------------
-
-### 3. Portales Lost & Found Universitarios (ej. UCLA)
-
-Ejemplo: https://www.transportation.ucla.edu/campus-parking/lost-found
-
-Aportes: - Clasificación estructurada - Centralización
-
-Limitaciones: - Sin app móvil dedicada - Sin notificaciones
-inteligentes - Flujo manual
+La autenticación puede realizarse usando el sistema institucional
+(Single Sign-On).
 
 ------------------------------------------------------------------------
 
 ## Arquitectura General
 
-### Opción Recomendada: Módulo dentro de UninorteCo
-
-Arquitectura lógica:
-
-Usuario -\> UninorteCo -\> Módulo Lost&Found -\> API REST -\> Backend
--\> Base de Datos
-
-------------------------------------------------------------------------
-
-## Arquitectura de Componentes
-
-Frontend: - App móvil (Estudiante) - App móvil (Personal)
-
-Backend: - API Gateway - Servicio de Objetos - Servicio de Reclamos -
-Servicio de Autenticación (SSO)
-
-Base de Datos: - Usuarios - Objetos - Reclamos - Auditoría
+``` mermaid
+graph TD
+    A[Usuario] -->|Login| B[App Flutter]
+    B --> C[API Backend]
+    C --> D[Base de Datos]
+    C --> E[Panel Administrativo]
+    E --> C
+```
 
 ------------------------------------------------------------------------
 
-## Flujo Funcional
+## Flujo del Sistema
 
-1.  Personal registra objeto encontrado.
-2.  Sistema guarda información en base de datos.
-3.  Estudiante consulta inventario.
-4.  Estudiante envía reclamo.
-5.  Personal valida solicitud.
-6.  Sistema notifica resultado.
-7.  Estudiante retira objeto presencialmente.
+``` mermaid
+sequenceDiagram
+    participant U as Usuario
+    participant A as App
+    participant B as Backend
+    participant D as Admin
 
-------------------------------------------------------------------------
-
-## Tecnologías Propuestas
-
-Frontend: - Flutter - React Native - Kotlin / Swift
-
-Backend: - Node.js + NestJS - Spring Boot - Django REST
-
-Base de Datos: - PostgreSQL - MySQL - Firebase (MVP)
-
-Infraestructura: - AWS - Azure - Google Cloud
-
-Autenticación: - OAuth 2.0 - JWT - SSO institucional
-
-Notificaciones: - Firebase Cloud Messaging
+    U->>A: Reporta objeto perdido
+    A->>B: Envía solicitud
+    B->>D: Notifica administrador
+    D->>B: Confirma coincidencia
+    B->>A: Notifica aprobación
+    A->>U: Usuario reclama objeto
+```
 
 ------------------------------------------------------------------------
 
-## Métricas de Éxito
+## Modelo de Datos Básico
 
--   Tiempo promedio de recuperación
--   Porcentaje de objetos recuperados
--   Número de reclamos digitales
--   Reducción de carga administrativa
--   Satisfacción estudiantil
+Objeto: - id - nombre - descripcion - categoria - ubicacion_encontrado -
+fecha_encontrado - estado (disponible, reclamado, entregado) -
+imagen_url
+
+Usuario: - id - nombre - correo_institucional - rol (estudiante,
+administrativo)
+
+SolicitudReclamo: - id - usuario_id - objeto_id -
+descripcion_prueba_propiedad - estado (pendiente, aprobado, rechazado)
 
 ------------------------------------------------------------------------
 
-## Conclusión
+## Funcionalidades Clave
 
-Lost&Found Uni integra control institucional, movilidad, trazabilidad y
-analítica en un solo sistema, alineado con el ecosistema digital
-universitario y preparado para escalar a futuro.
+### Usuario
+
+-   Ver objetos encontrados
+-   Filtrar por categoría o fecha
+-   Enviar solicitud de reclamación
+-   Subir evidencia
+-   Ver estado de su solicitud
+
+### Administrador
+
+-   Registrar objetos encontrados
+-   Validar solicitudes
+-   Aprobar o rechazar reclamaciones
+-   Marcar objeto como entregado
+-   Exportar reportes
+
+------------------------------------------------------------------------
+
+## Beneficios
+
+-   Reduce tiempo de gestión manual
+-   Mejora la trazabilidad
+-   Disminuye pérdida definitiva de objetos
+-   Aumenta eficiencia administrativa
+-   Mejora experiencia estudiantil
+
+------------------------------------------------------------------------
+
+## Futuras Mejoras
+
+-   Notificaciones push
+-   Reconocimiento de imagen
+-   Código QR para entrega
+-   Estadísticas por facultad
+-   Integración con cámaras o sistema de seguridad
+
+------------------------------------------------------------------------
+
+## Licencia
+
+Proyecto académico desarrollado para entorno universitario.
