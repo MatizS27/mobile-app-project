@@ -72,15 +72,19 @@ Supuestos clave:
 
 ---
 
-### 4.2 Casos de uso clave
+### 4.2 Casos de uso (diagrama compatible con GitHub)
 
-- UC1: Crear curso.
-- UC2: Unirse a curso mediante invitación.
-- UC3: Importar grupos desde LMS.
-- UC4: Crear actividad de evaluación.
-- UC5: Realizar evaluación entre pares.
-- UC6: Calcular promedios y generar reportes.
-- UC7: Consultar reportes por actividad, grupo y estudiante.
+```mermaid
+flowchart LR
+Docente --> UC1[Crear curso]
+Docente --> UC2[Importar grupos desde LMS]
+Docente --> UC3[Crear actividad de evaluación]
+Docente --> UC4[Ver reportes]
+
+Estudiante --> UC5[Unirse a curso]
+Estudiante --> UC6[Evaluar compañeros]
+Estudiante --> UC7[Ver resultados]
+```
 
 ---
 
@@ -259,26 +263,7 @@ E --> E4[Ver Resultados]
 
 ## 13. Diagramas adicionales
 
-### 13.1 Casos de uso
-
-```mermaid
-usecaseDiagram
-actor Docente
-actor Estudiante
-
-Docente --> (Crear curso)
-Docente --> (Importar grupos)
-Docente --> (Crear evaluación)
-Docente --> (Ver reportes)
-
-Estudiante --> (Unirse a curso)
-Estudiante --> (Evaluar pares)
-Estudiante --> (Ver resultados)
-```
-
----
-
-### 13.2 Secuencia de evaluación entre pares
+### 13.1 Secuencia de evaluación entre pares
 
 ```mermaid
 sequenceDiagram
