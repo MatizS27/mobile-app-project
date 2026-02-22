@@ -1,100 +1,85 @@
-# Peer Assessment App
+# Aplicación Móvil de Evaluación entre Pares  
+## Flutter + Clean Architecture + GetX
 
-Sistema de Evaluación de Desempeño Colaborativo
+Proyecto universitario de desarrollo móvil orientado a la evaluación entre pares en trabajos colaborativos, siguiendo principios de arquitectura limpia y buenas prácticas de ingeniería de software.
 
-## Información General
+---
 
--   **Materia:** Mobile Development Project
--   **Periodo Académico:** 2026-10
--   **Objetivo:** Desarrollar una aplicación móvil en Flutter que
-    permita a los estudiantes evaluar el desempeño y compromiso de sus
-    pares en actividades colaborativas.
--   **Equipo:** 4 estudiantes por grupo
--   **Tecnologías:** Flutter, GetX
--   **Arquitectura:** Clean Architecture
--   **Servicios Core:** Roble (Autenticación y almacenamiento de datos)
+## 1. Descripción general del proyecto
 
-------------------------------------------------------------------------
+La aplicación es una solución móvil desarrollada en Flutter que permite a estudiantes evaluar el desempeño y compromiso de sus compañeros de equipo en actividades colaborativas de curso. No se permite la autoevaluación y se soportan múltiples criterios de valoración como puntualidad, contribución, compromiso y actitud.
 
-## Referentes del Sector
+El objetivo principal es proporcionar a los docentes información cuantitativa y cualitativa sobre el funcionamiento real de los equipos de trabajo, facilitando procesos de retroalimentación formativa y toma de decisiones académicas.
 
-### Buddycheck
+El proyecto está diseñado para integrarse conceptualmente con el LMS Brightspace, utilizando sus group categories como fuente oficial de conformación de equipos.
 
-Herramienta especializada en evaluación por pares integrada con LMS como
-Brightspace. Permite calcular el factor de esfuerzo individual para
-ajustar calificaciones grupales.
+---
 
-### CATME (Comprehensive Assessment of Team Member Effectiveness)
+## 2. Alcance y objetivos
 
-Sistema académico basado en la nube que utiliza algoritmos para detectar
-patrones inusuales en evaluaciones y ofrece rúbricas validadas
-científicamente.
+### 2.1 Objetivo general
 
-### Teammates
+Desarrollar una aplicación móvil multiplataforma (Android / iOS) que permita la evaluación entre pares en trabajos grupales, ofreciendo un sistema estructurado, seguro y trazable para docentes y estudiantes.
 
-Herramienta open-source para feedback anónimo en el aula. Permite
-visualizar la brecha entre autopercepción y percepción del equipo.
+### 2.2 Objetivos específicos
 
-------------------------------------------------------------------------
+- Gestionar cursos, docentes y estudiantes.
+- Permitir que un docente administre múltiples cursos y que un estudiante esté inscrito en varios cursos.
+- Importar y sincronizar grupos desde Brightspace.
+- Crear actividades de evaluación entre pares con ventana de tiempo definida y visibilidad configurable.
+- Aplicar rúbricas con criterios configurables y escalas numéricas.
+- Generar reportes agregados y detallados por actividad, grupo y estudiante.
+- Garantizar una experiencia de usuario clara y coherente para ambos roles.
 
-## Diseño de la Solución
+---
 
-Se implementa una aplicación única con control de acceso basado en roles
-(RBAC).
+## 3. Contexto actual (AS-IS)
 
-### Justificación
+En el estado actual:
 
--   Centralización de lógica de negocio y entidades (Cursos, Grupos,
-    Evaluaciones).
--   Integración con Brightspace para importación de categorías de grupo.
--   Uso de servicios Roble para autenticación y persistencia de datos.
--   Permisos obligatorios: Localización y ejecución en segundo plano.
+- Los grupos no se crean dentro de la aplicación.
+- La conformación de equipos se realiza en Brightspace mediante group categories.
+- La aplicación importa y sincroniza esta información desde el LMS.
 
-------------------------------------------------------------------------
+Supuestos clave:
 
-## Flujo Funcional
+- Los grupos pueden cambiar y deben mantenerse actualizados.
+- La autenticación y almacenamiento de datos dependen de servicios institucionales (por ejemplo, Roble).
+- La app se enfoca exclusivamente en la evaluación entre pares.
 
-1.  Autenticación mediante Roble.
-2.  Identificación de rol (Profesor o Estudiante).
-3.  Profesor importa grupos desde Brightspace.
-4.  Estudiantes se unen mediante invitación o verificación.
-5.  Profesor activa evaluación con ventana de tiempo y tipo de
-    visibilidad.
-6.  Estudiantes evalúan a sus compañeros (sin autoevaluación).
-7.  Visualización de resultados según configuración de visibilidad.
+---
 
-------------------------------------------------------------------------
+## 4. Roles de usuario y casos de uso
 
-## Matriz de Evaluación
+### 4.1 Roles principales
 
-  ----------------------------------------------------------------------------------------
-  Criterio         Needs Improvement (2.0) Adequate (3.0)  Good (4.0)     Excellent (5.0)
-  ---------------- ----------------------- --------------- -------------- ----------------
-  Puntualidad      Ausencias constantes    Llegadas tarde  Generalmente   Siempre puntual
-                                           frecuentes      puntual        
+**Docente**
+- Crear y gestionar cursos.
+- Invitar estudiantes mediante códigos o enlaces.
+- Importar grupos desde Brightspace.
+- Crear actividades de evaluación.
+- Configurar rúbricas y visibilidad de resultados.
+- Consultar reportes agregados y detallados.
 
-  Contribuciones   Participación mínima    Participación   Aportes        Aportes
-                                           ocasional       constantes     relevantes y
-                                                                          enriquecedores
+**Estudiante**
+- Unirse a cursos.
+- Visualizar actividades pendientes.
+- Evaluar a sus compañeros (sin autoevaluación).
+- Consultar resultados agregados cuando estén habilitados.
 
-  Compromiso       Bajo compromiso         Compromiso      Responsable    Compromiso total
-                                           intermitente                   
+---
 
-  Actitud          Actitud negativa        Actitud         Actitud        Actitud ejemplar
-                                           irregular       positiva       
-  ----------------------------------------------------------------------------------------
+## 5. Arquitectura
 
-------------------------------------------------------------------------
+La aplicación adopta principios de Clean Architecture con separación clara entre presentación, dominio, datos e infraestructura, utilizando GetX para manejo de estado, navegación e inyección de dependencias.
 
-## Requisitos Técnicos
+---
 
--   Clean Architecture obligatoria
--   Uso exclusivo de GetX
--   Integración con servicios Roble
--   Permisos: Localización y Background Work
+## 6. Tecnologías
 
-------------------------------------------------------------------------
-
-## Prototipo
-
-Diseño disponible en Figma (enlace a agregar).
+- Flutter
+- GetX
+- REST / HTTP
+- SQLite / Hive
+- Clean Architecture
+- Principios SOLID
