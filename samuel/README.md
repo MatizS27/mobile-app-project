@@ -12,196 +12,231 @@ Proyecto universitario de desarrollo móvil orientado a la evaluación entre par
 3. [Contexto actual (AS-IS)](#3-contexto-actual-as-is)
 4. [Roles de usuario y casos de uso](#4-roles-de-usuario-y-casos-de-uso)
 5. [Referentes y soluciones existentes](#5-referentes-y-soluciones-existentes)
-6. [Justificación de la propuesta](#6-justificación-de-la-propuesta)
-7. [Composición y diseño de la solución](#7-composición-y-diseño-de-la-solución)
-8. [Flujo funcional detallado](#8-flujo-funcional-detallado)
-9. [Arquitectura de la solución](#9-arquitectura-de-la-solución)
-10. [Diseño de módulos](#10-diseño-de-módulos)
-11. [Modelo de datos](#11-modelo-de-datos-conceptual)
-12. [Integración con Brightspace](#12-integración-con-brightspace-y-servicios-institucionales)
-13. [Tecnologías](#13-tecnologías-y-requerimientos-técnicos)
-14. [Prototipo y diseño UI](#14-prototipo-y-diseño-ui)
-15. [Tabla comparativa de soluciones](#15-tabla-comparativa-de-soluciones)
-16. [Elementos adicionales de soporte](#16-elementos-adicionales-de-soporte)
+6. [Composición de la solución y arquitectura propuesta](#6-composición-de-la-solución-y-arquitectura-propuesta)
+7. [Diagrama de arquitectura](#7-diagrama-de-arquitectura)
+8. [Arquitectura de roles y navegación](#8-arquitectura-de-roles-y-navegación)
+9. [Diseño de módulos](#9-diseño-de-módulos)
+10. [Modelo de datos](#10-modelo-de-datos-conceptual)
+11. [Integración con Brightspace](#11-integración-con-brightspace-y-servicios-institucionales)
+12. [Tecnologías y requerimientos técnicos](#12-tecnologías-y-requerimientos-técnicos)
+13. [Diagramas adicionales](#13-diagramas-adicionales)
+14. [Diseño UI (Figma)](#14-diseño-ui-figma)
+15. [Estructura del repositorio](#15-estructura-del-repositorio)
+16. [Tabla comparativa de soluciones](#16-tabla-comparativa-de-soluciones)
 17. [Referencias](#17-referencias)
 
 ---
 
 ## 1. Descripción general del proyecto
 
-La aplicación es una solución móvil desarrollada en Flutter que permite a estudiantes evaluar el desempeño y compromiso de sus compañeros de equipo en actividades colaborativas de curso, sin autoevaluación y con soporte para criterios como puntualidad, contribución, compromiso y actitud.
+La aplicación es una solución móvil desarrollada en Flutter que permite a estudiantes evaluar el desempeño y compromiso de sus compañeros de equipo en actividades colaborativas de curso, sin autoevaluación y con soporte para diferentes criterios de valoración como puntualidad, contribución, compromiso y actitud.
+
+La herramienta busca ofrecer a los docentes información cuantitativa y cualitativa sobre el funcionamiento de los equipos, facilitando la toma de decisiones académicas y la retroalimentación formativa.
+
+El contexto pedagógico del proyecto se centra en cursos con metodologías de trabajo en grupo, donde la evaluación tradicional del producto final no refleja adecuadamente las contribuciones individuales ni la dinámica interna de los equipos. La aplicación se integra conceptualmente con el LMS Brightspace, aprovechando sus categorías de grupos como fuente de información estructurada acerca de los equipos.
 
 ---
 
 ## 2. Alcance y objetivos
 
-### Objetivo general
-Desarrollar una aplicación móvil multiplataforma que soporte la evaluación entre pares en trabajos grupales, brindando información clara y confiable a docentes y estudiantes.
+### 2.1 Objetivo general
 
-### Objetivos específicos
-- Gestión de cursos, usuarios y roles.
-- Importación y sincronización de grupos desde Brightspace.
-- Creación de actividades de evaluación con rúbricas configurables.
-- Visualización de resultados y reportes agregados.
+Desarrollar una aplicación móvil multiplataforma (Android / iOS) con Flutter que permita la evaluación entre pares de estudiantes en trabajos grupales, ofreciendo a docentes y estudiantes un sistema estructurado, seguro y trazable de evaluación de desempeño dentro de los equipos.
+
+### 2.2 Objetivos específicos
+
+- Registrar cursos, docentes y estudiantes.
+- Permitir múltiples cursos por docente y múltiples cursos por estudiante.
+- Sincronizar o importar la información de grupos desde Brightspace.
+- Mantener la coherencia cuando existan cambios en la conformación de equipos.
+- Permitir al docente crear actividades de evaluación entre pares con ventanas de tiempo definidas.
+- Configurar visibilidad de resultados (pública o privada).
+- Gestionar rúbricas de evaluación con criterios y escalas numéricas.
+- Proporcionar reportes agregados por actividad, grupo y estudiante.
+- Garantizar una experiencia de usuario clara y consistente para ambos roles.
 
 ---
 
 ## 3. Contexto actual (AS-IS)
 
-La conformación de grupos y gestión académica se realiza actualmente en Brightspace. La evaluación entre pares se hace de forma manual, dispersa y poco estructurada, dificultando la trazabilidad y el análisis.
+En el estado actual del sistema:
+
+- Los grupos no se crean dentro de la aplicación.
+- La conformación de equipos se gestiona en Brightspace mediante categorías de grupo.
+- La aplicación importa estos grupos mediante sincronización por API o archivos estructurados.
+
+Supuestos clave:
+
+- Los grupos pueden modificarse durante el semestre.
+- La aplicación debe reflejar estos cambios de manera coherente.
+- La autenticación y el almacenamiento de datos dependen de servicios institucionales como Roble.
+- La aplicación se enfoca exclusivamente en la lógica de evaluación entre pares.
 
 ---
 
 ## 4. Roles de usuario y casos de uso
 
-### Docente
-- Crear cursos y actividades.
-- Importar grupos.
-- Analizar reportes.
+### 4.1 Roles principales
 
-### Estudiante
+**Docente**
+- Crear y gestionar cursos.
+- Invitar estudiantes mediante mecanismos verificados.
+- Importar categorías de grupo desde Brightspace.
+- Crear y programar actividades de evaluación.
+- Definir criterios, ventanas de tiempo y visibilidad.
+- Visualizar reportes agregados y detallados.
+
+**Estudiante**
 - Unirse a cursos.
-- Evaluar a sus compañeros.
-- Consultar resultados.
+- Visualizar actividades pendientes.
+- Evaluar a cada miembro del equipo sin autoevaluación.
+- Consultar resultados cuando la visibilidad sea pública.
+
+### 4.2 Casos de uso
+
+```mermaid
+flowchart LR
+Docente --> UC1[Crear curso]
+Docente --> UC2[Importar grupos desde LMS]
+Docente --> UC3[Crear actividad de evaluación]
+Docente --> UC4[Ver reportes]
+
+Estudiante --> UC5[Unirse a curso]
+Estudiante --> UC6[Evaluar compañeros]
+Estudiante --> UC7[Ver resultados]
+```
 
 ---
 
 ## 5. Referentes y soluciones existentes
 
-- Peerceptiv: https://peerceptiv.com  
-- FeedbackFruits (Peer Review): https://feedbackfruits.com  
-- TEAMMATES: https://teammatesv4.appspot.com  
-- PeerEval: https://peereval.mit.edu  
+- Peerceptiv: https://peerceptiv.com
+- FeedbackFruits (Peer Review): https://feedbackfruits.com
+- TEAMMATES: https://teammatesv4.appspot.com
+- PeerEval: https://peereval.mit.edu
 
 ---
 
-## 6. Justificación de la propuesta
+## 6. Composición de la solución y arquitectura propuesta
 
-A partir del análisis de los referentes, se identifican limitaciones comunes como licenciamiento cerrado, baja integración con LMS específicos y poca flexibilidad en la adaptación institucional.
-
-Entrevistas informales realizadas a docentes universitarios que implementan trabajos colaborativos evidencian necesidades claras:
-- Evaluaciones estructuradas y rápidas.
-- Eliminación de autoevaluación.
-- Reportes claros por estudiante y grupo.
-- Integración con plataformas institucionales existentes.
-
-La propuesta responde directamente a estas necesidades con una solución móvil, modular y adaptable.
+La solución adopta Clean Architecture con separación estricta de capas y gestión de estado mediante GetX, favoreciendo mantenibilidad, testabilidad y escalabilidad.
 
 ---
 
-## 7. Composición y diseño de la solución
-
-Se propone **una única aplicación móvil** con gestión de roles (docente y estudiante), lo cual:
-- Reduce costos de desarrollo y mantenimiento.
-- Garantiza consistencia en la experiencia de usuario.
-- Permite escalar a aplicaciones separadas en el futuro si es necesario.
-
----
-
-## 8. Flujo funcional detallado
-
-1. El docente crea un curso.
-2. Se importan grupos desde Brightspace.
-3. El docente crea una actividad de evaluación.
-4. Los estudiantes acceden durante la ventana activa.
-5. Cada estudiante evalúa a sus compañeros (sin autoevaluación).
-6. El sistema calcula resultados.
-7. El docente visualiza reportes.
-8. Los estudiantes ven resultados si la visibilidad es pública.
+## 7. Diagrama de arquitectura
 
 ```mermaid
-sequenceDiagram
-participant D as Docente
-participant S as Estudiante
-participant APP as App
-participant LMS as Brightspace
+flowchart LR
+subgraph Presentation["Capa de Presentación"]
+UI[UI Flutter]
+CTRL[Controladores GetX]
+end
 
-D->>APP: Crear curso
-APP->>LMS: Importar grupos
-D->>APP: Crear evaluación
-S->>APP: Evaluar compañeros
-APP->>APP: Calcular resultados
-D->>APP: Ver reportes
-S->>APP: Ver resultados
+subgraph Domain["Capa de Dominio"]
+ENT[Entidades]
+UC[Casos de Uso]
+REPO_IF[Repositorios Abstractos]
+end
+
+subgraph Data["Capa de Datos"]
+REPO_IMPL[Repositorios Concretos]
+LOCAL_DB[Base de Datos Local]
+REMOTE_API[Servicios Externos]
+end
+
+UI --> CTRL
+CTRL --> UC
+UC --> REPO_IF
+REPO_IF --> REPO_IMPL
+REPO_IMPL --> LOCAL_DB
+REPO_IMPL --> REMOTE_API
 ```
 
 ---
 
-## 9. Arquitectura de la solución
+## 8. Arquitectura de roles y navegación
 
-Clean Architecture + GetX, separando presentación, dominio y datos para garantizar mantenibilidad y testabilidad.
-
----
-
-## 10. Diseño de módulos
-
-- Autenticación
-- Cursos
-- Grupos
-- Evaluaciones
-- Rúbricas
-- Reportes
+```mermaid
+flowchart TD
+A[Splash] --> B[Autenticación]
+B --> C{Rol}
+C --> D[Dashboard Docente]
+C --> E[Dashboard Estudiante]
+```
 
 ---
 
-## 11. Modelo de datos (conceptual)
+## 9. Diseño de módulos
+
+Incluye autenticación, cursos, grupos, actividades de evaluación, rúbricas y reportes, todos desacoplados y alineados con principios SOLID.
+
+---
+
+## 10. Modelo de datos (conceptual)
 
 User, Course, Group, GroupMember, AssessmentActivity, Evaluation, Criterion, CriterionScore
 
 ---
 
-## 12. Integración con Brightspace y servicios institucionales
+## 11. Integración con Brightspace y servicios institucionales
 
-- Autenticación centralizada.
-- Sincronización de grupos.
-- Comunicación mediante API REST.
+Integración mediante API REST y autenticación centralizada institucional.
 
 ---
 
-## 13. Tecnologías y requerimientos técnicos
+## 12. Tecnologías y requerimientos técnicos
 
 Flutter, GetX, REST, SQLite/Hive, Clean Architecture, SOLID.
 
 ---
 
-## 14. Prototipo y diseño UI
+## 13. Diagramas adicionales
 
-- Prototipo Figma: https://www.figma.com/XXXXXX  
-- Capturas de pantalla del prototipo (a integrar):
-  - Pantalla de inicio de sesión
-  - Dashboard docente
-  - Evaluación entre pares
-  - Reportes
-
-*(Las capturas deben añadirse como imágenes en el repositorio y referenciarse aquí con Markdown)*
+```mermaid
+sequenceDiagram
+participant S as Estudiante
+participant APP as App
+participant API as Backend
+participant LMS as Brightspace
+S->>APP: Iniciar sesión
+APP->>API: Validar credenciales
+API-->>APP: Token
+```
 
 ---
 
-## 15. Tabla comparativa de soluciones
+## 14. Diseño UI (Figma)
 
-| Plataforma | Evaluación entre pares | Integración LMS | Rúbricas | Código abierto |
-|-----------|------------------------|----------------|----------|----------------|
+https://www.figma.com/XXXXXX
+
+---
+
+## 15. Estructura del repositorio
+
+/lib  
+/presentation  
+/domain  
+/data  
+/core  
+
+---
+
+## 16. Tabla comparativa de soluciones
+
+| Plataforma | Evaluación entre pares | Integración LMS | Rúbricas configurables | Código abierto |
+|----------|-----------------------|-----------------|------------------------|----------------|
 | Peerceptiv | Sí | Parcial | Sí | No |
 | FeedbackFruits | Sí | Sí | Sí | No |
 | TEAMMATES | Sí | No | Limitado | Sí |
 | PeerEval | Sí | No | Sí | Sí |
-| **Propuesta** | **Sí** | **Sí (Brightspace)** | **Sí** | **Sí (académico)** |
-
----
-
-## 16. Elementos adicionales de soporte
-
-- Diagramas de arquitectura y secuencia.
-- Comparación con soluciones existentes.
-- Justificación pedagógica y técnica.
-- Preparación para evaluación académica.
+| **Proyecto propuesto** | **Sí** | **Sí (Brightspace)** | **Sí** | **Sí (académico)** |
 
 ---
 
 ## 17. Referencias
 
-- Peerceptiv – https://peerceptiv.com  
-- FeedbackFruits – https://feedbackfruits.com  
-- TEAMMATES – https://teammatesv4.appspot.com  
-- PeerEval – https://peereval.mit.edu  
+- Peerceptiv – https://peerceptiv.com
+- FeedbackFruits – https://feedbackfruits.com
+- TEAMMATES – https://teammatesv4.appspot.com
+- PeerEval – https://peereval.mit.edu
 - Documentación del curso
