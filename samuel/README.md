@@ -5,6 +5,28 @@ Proyecto universitario de desarrollo móvil orientado a la evaluación entre par
 
 ---
 
+## Tabla de Contenido
+
+1. [Descripción general del proyecto](#1-descripción-general-del-proyecto)
+2. [Alcance y objetivos](#2-alcance-y-objetivos)
+3. [Contexto actual (AS-IS)](#3-contexto-actual-as-is)
+4. [Roles de usuario y casos de uso](#4-roles-de-usuario-y-casos-de-uso)
+5. [Referentes y soluciones existentes](#5-referentes-y-soluciones-existentes)
+6. [Composición de la solución y arquitectura propuesta](#6-composición-de-la-solución-y-arquitectura-propuesta)
+7. [Diagrama de arquitectura](#7-diagrama-de-arquitectura)
+8. [Arquitectura de roles y navegación](#8-arquitectura-de-roles-y-navegación)
+9. [Diseño de módulos](#9-diseño-de-módulos)
+10. [Modelo de datos](#10-modelo-de-datos-conceptual)
+11. [Integración con Brightspace](#11-integración-con-brightspace-y-servicios-institucionales)
+12. [Tecnologías y requerimientos técnicos](#12-tecnologías-y-requerimientos-técnicos)
+13. [Diagramas adicionales](#13-diagramas-adicionales)
+14. [Diseño UI (Figma)](#14-diseño-ui-figma)
+15. [Estructura del repositorio](#15-estructura-del-repositorio)
+16. [Tabla comparativa de soluciones](#16-tabla-comparativa-de-soluciones)
+17. [Referencias](#17-referencias)
+
+---
+
 ## 1. Descripción general del proyecto
 
 La aplicación es una solución móvil desarrollada en Flutter que permite a estudiantes evaluar el desempeño y compromiso de sus compañeros de equipo en actividades colaborativas de curso, sin autoevaluación y con soporte para diferentes criterios de valoración como puntualidad, contribución, compromiso y actitud.
@@ -70,9 +92,7 @@ Supuestos clave:
 - Evaluar a cada miembro del equipo sin autoevaluación.
 - Consultar resultados cuando la visibilidad sea pública.
 
----
-
-### 4.2 Casos de uso (diagrama compatible con GitHub)
+### 4.2 Casos de uso
 
 ```mermaid
 flowchart LR
@@ -90,50 +110,16 @@ Estudiante --> UC7[Ver resultados]
 
 ## 5. Referentes y soluciones existentes
 
-El diseño del proyecto se inspira en plataformas de evaluación entre pares utilizadas en educación superior, como Peerceptiv, FeedbackFruits (Peer Review), TEAMMATES y PeerEval.
-
-Estos referentes influyen principalmente en:
-- El diseño de rúbricas.
-- La fiabilidad de la evaluación.
-- La automatización de procesos.
-- La presentación clara de reportes.
+- Peerceptiv: https://peerceptiv.com
+- FeedbackFruits (Peer Review): https://feedbackfruits.com
+- TEAMMATES: https://teammatesv4.appspot.com
+- PeerEval: https://peereval.mit.edu
 
 ---
 
 ## 6. Composición de la solución y arquitectura propuesta
 
-### 6.1 Decisión de arquitectura
-
-Se propone una sola aplicación móvil con gestión de roles diferenciados (docente y estudiante). Esta decisión facilita el mantenimiento del código, el despliegue y la reutilización de componentes.
-
-La arquitectura está diseñada para permitir, en el futuro, la separación en dos aplicaciones independientes con mínimo acoplamiento.
-
----
-
-### 6.2 Arquitectura general (Clean Architecture + GetX)
-
-La aplicación adopta principios de Clean Architecture, separando responsabilidades en las siguientes capas:
-
-**Capa de Presentación**
-- Widgets Flutter.
-- Controladores GetX.
-- Manejo de estado y navegación.
-
-**Capa de Dominio**
-- Entidades.
-- Casos de uso.
-- Repositorios abstractos.
-
-**Capa de Datos**
-- Repositorios concretos.
-- DTOs y mapeadores.
-- Almacenamiento local.
-
-**Capa de Infraestructura**
-- Clientes HTTP.
-- Autenticación y tokens.
-- Inyección de dependencias.
-- Permisos del sistema.
+La solución adopta Clean Architecture con separación estricta de capas y gestión de estado mediante GetX, favoreciendo mantenibilidad, testabilidad y escalabilidad.
 
 ---
 
@@ -173,97 +159,38 @@ REPO_IMPL --> REMOTE_API
 ```mermaid
 flowchart TD
 A[Splash] --> B[Autenticación]
-
 B --> C{Rol}
 C --> D[Dashboard Docente]
 C --> E[Dashboard Estudiante]
-
-D --> D1[Gestión de Cursos]
-D --> D2[Importar Grupos]
-D --> D3[Crear Evaluación]
-D --> D4[Ver Reportes]
-
-E --> E1[Mis Cursos]
-E --> E2[Actividades Pendientes]
-E --> E3[Evaluar Pares]
-E --> E4[Ver Resultados]
 ```
 
 ---
 
 ## 9. Diseño de módulos
 
-### 9.1 Autenticación
-- Integración con servicio institucional.
-- Manejo seguro de tokens.
-- Identificación automática del rol.
-
-### 9.2 Cursos
-- Creación y gestión por parte del docente.
-- Visualización de cursos del estudiante.
-- Asociación con cursos del LMS.
-
-### 9.3 Grupos
-- Importación desde Brightspace.
-- Sincronización de cambios.
-- Asociación con actividades.
-
-### 9.4 Actividades de evaluación
-- Nombre de la actividad.
-- Ventana de tiempo.
-- Visibilidad de resultados.
-- Estados: programada, activa, cerrada.
-
-### 9.5 Rúbricas
-- Criterios base: puntualidad, contribuciones, compromiso y actitud.
-- Escala de 2.0 a 5.0.
-- Descriptores claros para cada nivel.
-- Diseño extensible.
-
-### 9.6 Reportes
-- Reportes por actividad.
-- Reportes por grupo.
-- Reportes por estudiante.
-- Exportación de datos.
+Incluye autenticación, cursos, grupos, actividades de evaluación, rúbricas y reportes, todos desacoplados y alineados con principios SOLID.
 
 ---
 
 ## 10. Modelo de datos (conceptual)
 
-- User
-- Course
-- Group
-- GroupMember
-- AssessmentActivity
-- Evaluation
-- Criterion
-- CriterionScore
+User, Course, Group, GroupMember, AssessmentActivity, Evaluation, Criterion, CriterionScore
 
 ---
 
 ## 11. Integración con Brightspace y servicios institucionales
 
-- Autenticación centralizada.
-- Sincronización periódica de grupos.
-- Comunicación mediante API REST o archivos estructurados.
-- Uso de backend institucional (Roble).
+Integración mediante API REST y autenticación centralizada institucional.
 
 ---
 
 ## 12. Tecnologías y requerimientos técnicos
 
-- Flutter
-- GetX
-- REST / HTTP
-- SQLite / Hive
-- Clean Architecture
-- Principios SOLID
+Flutter, GetX, REST, SQLite/Hive, Clean Architecture, SOLID.
 
 ---
 
 ## 13. Diagramas adicionales
-
-### 13.1 Secuencia de evaluación entre pares
 
 ```mermaid
 sequenceDiagram
@@ -271,52 +198,45 @@ participant S as Estudiante
 participant APP as App
 participant API as Backend
 participant LMS as Brightspace
-
 S->>APP: Iniciar sesión
 APP->>API: Validar credenciales
 API-->>APP: Token
-
-S->>APP: Abrir actividad
-APP->>API: Obtener grupo
-API->>LMS: Verificar grupo
-LMS-->>API: Datos actualizados
-API-->>APP: Información del grupo
-
-S->>APP: Enviar evaluación
-APP->>API: Registrar evaluación
-API-->>APP: Confirmación
 ```
 
 ---
 
 ## 14. Diseño UI (Figma)
 
-- Prototipo Docente: https://www.figma.com/XXXXXX_DOCENTE
-- Prototipo Estudiante: https://www.figma.com/XXXXXX_ESTUDIANTE
-
-Se recomienda almacenar las imágenes en la carpeta `design/figma/`.
+https://www.figma.com/XXXXXX
 
 ---
 
 ## 15. Estructura del repositorio
 
-```
-/lib
-  /presentation
-  /domain
-  /data
-  /core
-/test
-/design/figma
-/docs
-```
+/lib  
+/presentation  
+/domain  
+/data  
+/core  
 
 ---
 
-## 16. Referencias
+## 16. Tabla comparativa de soluciones
 
-- Peerceptiv – Peer Assessment
-- FeedbackFruits – Peer Review
-- TEAMMATES – Student Peer Evaluation
-- PeerEval – Peer Assessment App
+| Plataforma | Evaluación entre pares | Integración LMS | Rúbricas configurables | Código abierto |
+|----------|-----------------------|-----------------|------------------------|----------------|
+| Peerceptiv | Sí | Parcial | Sí | No |
+| FeedbackFruits | Sí | Sí | Sí | No |
+| TEAMMATES | Sí | No | Limitado | Sí |
+| PeerEval | Sí | No | Sí | Sí |
+| **Proyecto propuesto** | **Sí** | **Sí (Brightspace)** | **Sí** | **Sí (académico)** |
+
+---
+
+## 17. Referencias
+
+- Peerceptiv – https://peerceptiv.com
+- FeedbackFruits – https://feedbackfruits.com
+- TEAMMATES – https://teammatesv4.appspot.com
+- PeerEval – https://peereval.mit.edu
 - Documentación del curso
