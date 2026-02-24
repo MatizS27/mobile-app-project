@@ -310,7 +310,7 @@ El estudiante accede a un proceso simplificado de evaluación. Una vez autentica
 
 ### Enlace al Prototipo en Figma
 
-**[Ver prototipo interactivo en Figma](#)** *(Agregar enlace)*
+**[Ver diseño interactivo en Figma](#)** *(https://www.figma.com/design/AvRbz3VG7QGYH9J5hss1Px/Movil?node-id=0-1&t=31rvXPONUacjTIax-1)*
 
 ---
 
@@ -319,15 +319,15 @@ El estudiante accede a un proceso simplificado de evaluación. Una vez autentica
 #### Vista Profesor
 
 ##### 1. Dashboard Principal
-![Dashboard Profesor](ruta/a/captura1.png)
+![Dashboard Profesor](images/Section1.png)
 *Descripción: Vista general con cursos activos y estadísticas*
 
 ##### 2. Configuración de Evaluación
-![Configuración](ruta/a/captura2.png)
+![Configuración](images/Section2.png)
 *Descripción: Pantalla de configuración de parámetros de evaluación*
 
 ##### 3. Resultados y Estadísticas
-![Estadísticas](ruta/a/captura3.png)
+![Estadísticas](images/Section3.png)
 *Descripción: Dashboard analítico con resultados del grupo*
 
 ---
@@ -335,15 +335,15 @@ El estudiante accede a un proceso simplificado de evaluación. Una vez autentica
 #### Vista Estudiante
 
 ##### 4. Evaluaciones Activas
-![Evaluaciones Activas](ruta/a/captura4.png)
+![Evaluaciones Activas](images/Section4.png)
 *Descripción: Lista de evaluaciones disponibles para el estudiante*
 
 ##### 5. Formulario de Evaluación
-![Formulario Evaluación](ruta/a/captura5.png)
+![Formulario Evaluación](images/Section5.png)
 *Descripción: Interfaz de evaluación con rúbrica*
 
 ##### 6. Resultados Personales
-![Resultados Estudiante](ruta/a/captura6.png)
+![Resultados Estudiante](images/Section6.png)
 *Descripción: Visualización de retroalimentación recibida*
 
 ---
