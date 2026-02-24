@@ -320,7 +320,7 @@ El estudiante accede a un proceso simplificado de evaluación. Una vez autentica
 
 ##### 1. Dashboard Principal
 ![Dashboard Profesor](images/Section1.png)
-*Descripción: Vista general con cursos activos y estadísticas*
+*Descripción: Vista general con grupos activos*
 
 ##### 2. Configuración de Evaluación
 ![Configuración](images/Section2.png)
@@ -334,17 +334,17 @@ El estudiante accede a un proceso simplificado de evaluación. Una vez autentica
 
 #### Vista Estudiante
 
-##### 4. Evaluaciones Activas
+##### 4. Cursos Activos
 ![Evaluaciones Activas](images/Section4.png)
-*Descripción: Lista de evaluaciones disponibles para el estudiante*
+*Descripción: Lista de grupos disponibles para el estudiante*
 
-##### 5. Formulario de Evaluación
+##### 5. Evaluaciones Activas
 ![Formulario Evaluación](images/Section5.png)
-*Descripción: Interfaz de evaluación con rúbrica*
+*Descripción: Interfaz de evaluaciones disponibles*
 
-##### 6. Resultados Personales
+##### 6. Encuesta Coevaluación
 ![Resultados Estudiante](images/Section6.png)
-*Descripción: Visualización de retroalimentación recibida*
+*Descripción: Interfaz de evaluación con rúbrica*
 
 ---
 
