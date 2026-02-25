@@ -207,7 +207,7 @@ API-->>APP: Token
 
 ## 14. Diseño UI (Figma)
 
-https://www.figma.com/XXXXXX
+https://www.figma.com/make/frGotglFtnRxUM9cfFT6iR/University-Peer-Assessment-App-UI?t=QzQNyiDh5nvaDxh8-1
 
 ---
 
